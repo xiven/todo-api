@@ -115,19 +115,19 @@ app.listen(port, () => {
     console.log(`Started on port ${port}`);
 });
 
+// POST /users/login {email, password}
+app.post('/users/login', (req, res) => {
+    var body = _.pick(req.body, ['email', 'password']);
+    var user = new User(body);
+
+    User.findByCredentials(body.email, body.password).then((user) => {
+        return user.generateAuthToken().then((token) => {
+          res.header('x-auth', token).send(user);
+        });
+    }).catch((e) => {
+        res.status(400).send();
+    });
+
+});
+
 module.exports = {app};
-
-
-
-
-
-// var newUser = new User({
-//     //email: ' j.m.osterman@gmail.com  '
-// });
-
-// newUser.save().then((result) => {
-//     console.log(JSON.stringify(result, undefined, 2));
-// }, (err) => {
-//     console.log('Unable to save user', err);
-// });
-// set email property, require it, trim it, set type = string, minLength of 1
