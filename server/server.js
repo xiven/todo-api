@@ -115,7 +115,6 @@ app.listen(port, () => {
     console.log(`Started on port ${port}`);
 });
 
-// POST /users/login {email, password}
 app.post('/users/login', (req, res) => {
     var body = _.pick(req.body, ['email', 'password']);
     var user = new User(body);
